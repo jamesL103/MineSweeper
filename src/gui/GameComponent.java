@@ -78,6 +78,7 @@ public class GameComponent extends JComponent{
 		this.game = game;
 		setPreferredSize(new Dimension(SQUARE_DIMENSION * game.getWidth(), SQUARE_DIMENSION * game.getHeight()));
 		addMouseListener(new MouseHandler());
+		repaint();
 	}
 
 	/**Instantiates a new Minesweeper gameGui component.

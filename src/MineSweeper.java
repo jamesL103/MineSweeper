@@ -38,7 +38,7 @@ public class MineSweeper  {
 
         container.add(topBar, BorderLayout.NORTH);
 
-
+        //set window data and make it visible
         container.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         container.setSize(600, 400);
         container.setName("Minesweeper");
@@ -52,11 +52,11 @@ public class MineSweeper  {
             public void actionPerformed(ActionEvent e) {
 //                generateNewGame(heightInput.getText(), widthInput.getText());
                 try {
-
                     int height = Integer.parseInt(heightInput.getText());
                     int width = Integer.parseInt(widthInput.getText());
                     container.add(new GameComponent(height, width, 0.5), BorderLayout.CENTER);
-                    System.out.println("success");
+                    container.repaint();
+//                    System.out.println("height input text: " + heightInput.getText());
                 } catch (NumberFormatException ignored){
 
                 }
