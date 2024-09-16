@@ -1,11 +1,7 @@
 import gui.GameComponent;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**A class that creates and instantiates the gui for the game Minesweeper.
@@ -47,49 +43,57 @@ public class MineSweeper  {
         JButton generator = getGeneratorButton(gameInputs, container);
         topBar.add(generator);
 
-
-
-
         container.add(topBar, BorderLayout.NORTH);
+
+
+
+
 
         //set window data and make it visible
         container.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        container.setSize(600, 400);
+        container.setSize(700, 500);
         container.setName("Minesweeper");
+        container.setTitle("Minesweeper");
         container.setVisible(true);
     }
 
     private static JButton getGeneratorButton(ArrayList<TextField> inputs, JFrame container) {
         JButton generator = new JButton("Generate new Game");
-        generator.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        generator.addActionListener(e -> {
 //                generateNewGame(heightInput.getText(), widthInput.getText());
-                try {
-                    if (game != null) {
-                        container.remove(game);
-                    }
-                    int height = Integer.parseInt(inputs.get(0).getText());
-                    int width = Integer.parseInt(inputs.get(1).getText());
-                    float density = Float.parseFloat(inputs.get(2).getText());
-                    game = new GameComponent(height, width, density);
-                    container.add(game, BorderLayout.CENTER);
-                    container.repaint();
-                    container.paintComponents(container.getGraphics());
-//                    System.out.println("height input text: " + heightInput.getText());
-                } catch (NumberFormatException ignored){
-
+            try {
+                if (game != null) {
+                    container.remove(game);
                 }
+                int height = Integer.parseInt(inputs.get(0).getText());
+                int width = Integer.parseInt(inputs.get(1).getText());
+                float density = Float.parseFloat(inputs.get(2).getText());
+                game = new GameComponent(height, width, density);
+                container.add(game, BorderLayout.CENTER);
+                addSideBars(container);
+                container.repaint();
+                container.paintComponents(container.getGraphics());
+            } catch (NumberFormatException ignored){
+
             }
         });
         return generator;
+    }
+    //add sideBars to the window to center the game
+    private static void addSideBars(JFrame container) {
+        JComponent sideBar = new JComponent() {
+        };
+        sideBar.setBackground(Color.WHITE);
+        Dimension gameSize = game.getPreferredSize();
+        sideBar.setSize((container.getWidth()-gameSize.width)/2, container.getHeight());
+        container.add(sideBar, BorderLayout.WEST);
+        container.add(sideBar, BorderLayout.EAST);
     }
 
 
     public static void main(String[] args) {
         Runnable createGui = MineSweeper::buildGui;
         SwingUtilities.invokeLater(createGui);
-
     }
 
 }

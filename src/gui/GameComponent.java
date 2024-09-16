@@ -24,7 +24,7 @@ public class GameComponent extends JComponent{
 	private final static Image RED_FLAG;
 
 	//Default colors of the game
-	private static final Color BACKGROUND_COLOR = Color.WHITE;
+	private static final Color BACKGROUND_COLOR = Color.DARK_GRAY;
 	private static final Color COVER_COLOR = Color.GREEN;
 	private static final Color EMPTY_COLOR = new Color(215, 184, 153);
 	private static final Color TEXT_COLOR = Color.BLACK;
@@ -91,7 +91,9 @@ public class GameComponent extends JComponent{
 	public GameComponent(int height, int width, double density) {
 		game = new MineSweeperGame(height,width, density);
 		game.setObserver(new GuiObserver());
-		setPreferredSize(new Dimension(SQUARE_DIMENSION * width, SQUARE_DIMENSION * height));
+		Dimension size = new Dimension(SQUARE_DIMENSION * width, SQUARE_DIMENSION * height);
+		setPreferredSize(size);
+		setMaximumSize(size);
 		addMouseListener(new MouseHandler());
 	}
 	
@@ -111,12 +113,14 @@ public class GameComponent extends JComponent{
 			Point point = e.getPoint();
 			int rowIndex = point.y / SQUARE_DIMENSION;
 			int colIndex = point.x / SQUARE_DIMENSION;
-			if (e.getButton() == MouseEvent.BUTTON3) {
-				game.toggleFlag(rowIndex, colIndex);
-			} else if (e.getButton() == MouseEvent.BUTTON1) {
-				game.removeCover(rowIndex, colIndex);
+			if (rowIndex < game.getHeight() && colIndex < game.getWidth()) {
+				if (e.getButton() == MouseEvent.BUTTON3) {
+					game.toggleFlag(rowIndex, colIndex);
+				} else if (e.getButton() == MouseEvent.BUTTON1) {
+					game.removeCover(rowIndex, colIndex);
+				}
+				repaint();
 			}
-			repaint();
 		}
 	}
 	
@@ -172,7 +176,7 @@ public class GameComponent extends JComponent{
 					paintCover(g, row, col); //paint a cover square
 				} else {
 					int mineCount = game.getMineCount(row, col);
-					if (mineCount != -1) { //square is empty
+					if (mineCount != -1) { //square has mine
 						paintEmptySquare(g, row, col, mineCount); //paint an empty square, along with mine count if applicable
 					} else {
 						paintMineSquare(g, row, col); //paint a mine square
@@ -245,7 +249,7 @@ public class GameComponent extends JComponent{
 
 	
 	/**Builds the frame to contain and display the game component
-	 * 
+	 * For testing purposes
 	 *
 	 */
 	public static void buildGame(MineSweeperGame mineSweeper) {
@@ -262,7 +266,7 @@ public class GameComponent extends JComponent{
 	}
 	
 	
-	/**Main method
+	/**Main method for testing
 	 * 
 	 * @param args
 	 */
