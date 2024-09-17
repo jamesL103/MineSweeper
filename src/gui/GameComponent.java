@@ -56,15 +56,9 @@ public class GameComponent extends JComponent{
 		 * The method's parameter is a Rectangle representing the region that needs to be
 		 * repainted.
 		 * When invoked, the method will cause the GUI to repaint
-		 * the specified region.
-		 * 
-		 * @param r a rectangle representing the region that needs to be
-		 * repainted.
+		 *
 		 */
-		public void notifyRepaint(Rectangle r) {
-			Point regionStart = new Point(r.x * SQUARE_DIMENSION, r.y * SQUARE_DIMENSION);
-			Dimension regionDimension = new Dimension(r.width * SQUARE_DIMENSION, r.height * SQUARE_DIMENSION);
-//			repaint(new Rectangle(regionStart, regionDimension));
+		public void notifyRepaint() {
 			repaint();
 		}
 		

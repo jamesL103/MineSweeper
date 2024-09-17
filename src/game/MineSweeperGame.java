@@ -1,8 +1,6 @@
 package game;
 
-import java.awt.Dimension;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -66,7 +64,7 @@ public class MineSweeperGame {
 
 		if (!board.getBoard()[row][col].isEmpty()) { //check if the selected tile has a mine
 			covers.removeCover(row, col);
-			observer.notifyRepaint(new Rectangle(col, row, 1, 1));
+			observer.notifyRepaint();
 			gameOver();//ends the game
 			return;
 		}
@@ -101,7 +99,7 @@ public class MineSweeperGame {
 	 			}
  			}
  		}
- 		observer.notifyRepaint(new Rectangle(topLeft, new Dimension(bottomRight.x - topLeft.x, bottomRight.y - topLeft.y)));
+ 		observer.notifyRepaint();
 	}
 	
 	/**Returns a Queue containing all adjacent, empty, unvisited Squares
@@ -130,7 +128,6 @@ public class MineSweeperGame {
 	
 	/** Toggles a flag at the specified index on the board if there
 	 * is a cover at the index.
-	 * 
 	 * If the specified index is out of bounds, an
 	 * Exception will be thrown.
 	 * 
@@ -157,8 +154,8 @@ public class MineSweeperGame {
 
 	/**Returns whether there is a cover at the specified board index
 	 *
-	 * @param row
-	 * @param col
+	 * @param row the row index
+	 * @param col the column index
 	 * @return whether there is a cover
 	 */
 	public boolean hasCover(int row, int col) {
@@ -166,11 +163,10 @@ public class MineSweeperGame {
 	}
 
 	/**Returns the number of mines bordering a specified tile.
-	 *
 	 * Returns -1 if there is a mine on the tile.
 	 *
-	 * @param row
-	 * @param col
+	 * @param row the row index
+	 * @param col the column index
 	 * @return the number of bordering mines
 	 */
 	public int getMineCount(int row, int col) {
@@ -182,24 +178,6 @@ public class MineSweeperGame {
 	 */
 	public void gameOver() {
 		System.out.println("fuck");
-	}
-	
-	/**Returns an array representation of the game board, without
-	 * making a copy.
-	 * 
-	 * @return the game board
-	 */
-	public GridSquare[][] getBoard() {
-		return board.getBoard();
-	}
-	
-	/**Returns an array representation of the cover board,
-	 * without making a copy.
-	 * 
-	 * @return the cover board
-	 */
-	public GridSquare[][] getCovers() {
-		return covers.getBoard();
 	}
 	
 	/**Returns the height, in squares, of the game board.
