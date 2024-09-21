@@ -10,10 +10,10 @@ import gui.GameComponent;
 
 public class MineSweeperGame {
 	//board that stores the mines and empty tiles on the board
-	private MineBoard board;
+	private final MineBoard BOARD;
 	
 	//board that stores the covers and flags on the board
-	private CoverBoard covers;
+	private final CoverBoard COVERS;
 	
 	private GameComponent.GuiObserver observer;
 	
@@ -28,8 +28,8 @@ public class MineSweeperGame {
 	 * @param density the density of the mines on the board
 	 */
 	public MineSweeperGame(int rows, int cols, double density) {
-		board = new MineBoard(rows, cols, density);
-		covers = new CoverBoard(rows,cols);
+		BOARD = new MineBoard(rows, cols, density);
+		COVERS = new CoverBoard(rows,cols);
 	}
 	
 	/**Sets the game's observer to the specified observer.
@@ -52,54 +52,49 @@ public class MineSweeperGame {
 	 */
 	public void removeCover(int row, int col) {
 		if (!generated) { //only runs on game start, when first cover is removed
-			board.generateBoard(row, col);
+			BOARD.generateBoard(row, col);
 			generated = true;
-			System.out.println(board);
+			System.out.println(BOARD);
 		}
 		//if the selected square can't be removed/no square exists
 		//returns without doing anything
-		if (!covers.removeCover(row, col)) {
+		if (!COVERS.removeCover(row, col)) {
 			return;
 		}
 
-		if (!board.getBoard()[row][col].isEmpty()) { //check if the selected tile has a mine
-			covers.removeCover(row, col);
+		if (!BOARD.getBoard()[row][col].isEmpty()) { //check if the selected tile has a mine
+			COVERS.removeCover(row, col);
 			observer.notifyRepaint();
 			gameOver();//ends the game
 			return;
 		}
 
-		Point topLeft = new Point(col, row), bottomRight = new Point(col + 1, row + 1); //points to set the boundary of the repaint area
-		if (row < 0 || row >= board.getHeight() || col < 0 || col >= board.getWidth()) { //checks if boundaries are out of bounds
+		if (row < 0 || row >= BOARD.getHeight() || col < 0 || col >= BOARD.getWidth()) { //checks if boundaries are out of bounds
 			throw new IllegalArgumentException("Coordinates out of bounds");
 		}
-		Queue<Point> toVisit = new LinkedList<>(); //list of squares to visit
- 		Set<Point> visited = new HashSet<>(); //set of squares already checked/removed
- 		toVisit.add(new Point(col, row));
- 		while (!toVisit.isEmpty()) {
- 			Point currentIndex = toVisit.remove();
- 			if (!visited.contains(currentIndex)) {
-	 			GridSquare currentSquare = board.getBoard()[currentIndex.y][currentIndex.x];
-	 			if (currentSquare.isEmpty()) {
-	 				visited.add(currentIndex);
-	 				covers.removeCover(currentIndex.y, currentIndex.x);
-	 				if (currentIndex.x < topLeft.x) {
-	 					topLeft.setLocation(currentIndex.x, topLeft.y);
-	 				} else if (currentIndex.x > bottomRight.x) {
-	 					bottomRight.setLocation(currentIndex.x, bottomRight.y);
-	 				}
-	 				if (currentIndex.y < topLeft.y) {
-	 					topLeft.setLocation(topLeft.x, currentIndex.y);
-	 				} else if (currentIndex.y > bottomRight.y) {
-	 					bottomRight.setLocation(bottomRight.x, currentIndex.y);
-	 				}
-	 				if (((EmptySquare)currentSquare).getMines() == 0) {
-	 					toVisit.addAll(getBorderingEmptySquares(currentIndex, visited));
-	 				}
-	 			}
- 			}
- 		}
+
+		removeNeighboringCovers(new Point(col, row));
  		observer.notifyRepaint();
+	}
+
+	//helper method to remove any neighboring covers from the start that are empty
+	private void removeNeighboringCovers(Point start) {
+		Queue<Point> toVisit = new LinkedList<>(); //list of squares to visit
+		Set<Point> visited = new HashSet<>(); //set of squares already checked/removed
+		toVisit.add(start);
+		while (!toVisit.isEmpty()) {
+			Point currentIndex = toVisit.remove();
+			if (!visited.contains(currentIndex)) {
+				GridSquare currentSquare = BOARD.getBoard()[currentIndex.y][currentIndex.x];
+				if (currentSquare.isEmpty()) {
+					visited.add(currentIndex);
+					COVERS.removeCover(currentIndex.y, currentIndex.x);
+					if (((EmptySquare)currentSquare).getMines() == 0) {
+						toVisit.addAll(getBorderingEmptySquares(currentIndex, visited));
+					}
+				}
+			}
+		}
 	}
 	
 	/**Returns a Queue containing all adjacent, empty, unvisited Squares
@@ -113,9 +108,9 @@ public class MineSweeperGame {
 		Queue<Point> toReturn = new LinkedList<>();
 		int row = p.y;
 		int col = p.x;
-		GridSquare[][] gameBoard = board.getBoard();
-		for (int rowOffset = (row == 0 ? 0: -1); rowOffset <= 1 && row + rowOffset < board.HEIGHT; rowOffset ++) {
-			for (int colOffset = (col == 0 ? 0: -1); colOffset <= 1 && col + colOffset < board.WIDTH; colOffset ++) {
+		GridSquare[][] gameBoard = BOARD.getBoard();
+		for (int rowOffset = (row == 0 ? 0: -1); rowOffset <= 1 && row + rowOffset < BOARD.HEIGHT; rowOffset ++) {
+			for (int colOffset = (col == 0 ? 0: -1); colOffset <= 1 && col + colOffset < BOARD.WIDTH; colOffset ++) {
 				Point curr = new Point(col + colOffset, row + rowOffset);
 				if (gameBoard[curr.y][curr.x].isEmpty() && !visited.contains(curr)) {
 					toReturn.add(curr);
@@ -135,7 +130,7 @@ public class MineSweeperGame {
 	 * @param col the column to add a flag at
 	 */
 	public void toggleFlag(int row, int col) {
-		covers.toggleFlag(row, col);
+		COVERS.toggleFlag(row, col);
 	}
 	
 	/**Determines whether there is a flag at a specified index
@@ -149,7 +144,7 @@ public class MineSweeperGame {
 		if (row > getHeight() || col > getWidth()) {
 			throw new IllegalArgumentException("Index out of bounds.");
 		}
-		return covers.hasFlag(row, col);
+		return COVERS.hasFlag(row, col);
 	}
 
 	/**Returns whether there is a cover at the specified board index
@@ -159,7 +154,7 @@ public class MineSweeperGame {
 	 * @return whether there is a cover
 	 */
 	public boolean hasCover(int row, int col) {
-		return covers.hasCover(row, col);
+		return COVERS.hasCover(row, col);
 	}
 
 	/**Returns the number of mines bordering a specified tile.
@@ -170,7 +165,7 @@ public class MineSweeperGame {
 	 * @return the number of bordering mines
 	 */
 	public int getMineCount(int row, int col) {
-		return board.getBorderingMineCount(row, col);
+		return BOARD.getBorderingMineCount(row, col);
 	}
 
 	/**This method is called when the player hits a mine.
@@ -185,7 +180,7 @@ public class MineSweeperGame {
 	 * @return the height of the game board
 	 */
 	public int getHeight() {
-		return board.getHeight();
+		return BOARD.getHeight();
 	}
 	
 	/**Returns the width, in squares, of the game board.
@@ -193,6 +188,6 @@ public class MineSweeperGame {
 	 * @return the width of the game board.
 	 */
 	public int getWidth() {
-		return board.getWidth();
+		return BOARD.getWidth();
 	}
 }

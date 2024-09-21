@@ -22,6 +22,12 @@ public class MineSweeper  {
      *
      */
     private static void buildGui() {
+        //set window data and make it visible
+        CONTAINER.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        CONTAINER.setSize(700, 500);
+        CONTAINER.setName("Minesweeper");
+        CONTAINER.setTitle("Minesweeper");
+        CONTAINER.setVisible(true);
 
         BorderLayout mainLayout = new BorderLayout();
         CONTAINER.setLayout(mainLayout);
@@ -30,13 +36,6 @@ public class MineSweeper  {
         CONTAINER.add(new GameControlBar(GEN_OBSERVER), BorderLayout.NORTH);
 
 
-
-        //set window data and make it visible
-        CONTAINER.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        CONTAINER.setSize(700, 500);
-        CONTAINER.setName("Minesweeper");
-        CONTAINER.setTitle("Minesweeper");
-        CONTAINER.setVisible(true);
     }
 
     //add sideBars to the window to center the game in the frame

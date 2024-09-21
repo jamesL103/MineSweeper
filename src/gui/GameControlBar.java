@@ -52,7 +52,7 @@ public class GameControlBar extends JComponent {
      */
     private JButton getGeneratorButton() {
         JButton generator = new JButton("Generate new Game");
-        generator.addActionListener(_ -> {
+        generator.addActionListener(e -> {
             ArrayList<String> params = new ArrayList<>();
             params.add(HEIGHT_INPUT.getText());
             params.add(WIDTH_INPUT.getText());
