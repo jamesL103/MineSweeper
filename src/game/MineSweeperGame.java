@@ -6,7 +6,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Set;
 
-import gui.GameComponent;
+import gui.GameScreen;
 
 public class MineSweeperGame {
 	//board that stores the mines and empty tiles on the board
@@ -15,7 +15,7 @@ public class MineSweeperGame {
 	//board that stores the covers and flags on the board
 	private final CoverBoard COVERS;
 	
-	private GameComponent.GuiObserver observer;
+	private GameScreen.GuiObserver observer;
 	
 	//Stores whether the mines have been placed on the game board
 	private boolean generated = false;
@@ -36,7 +36,7 @@ public class MineSweeperGame {
 	 * 
 	 * @param observer the observer to be used by the game.
 	 */
-	public void setObserver(GameComponent.GuiObserver observer) {
+	public void setObserver(GameScreen.GuiObserver observer) {
 		this.observer = observer;
 	}
 	

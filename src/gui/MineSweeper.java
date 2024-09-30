@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class MineSweeper  {
 
     //the game instance to display
-    private static GameComponent game;
+    private static GameScreen game;
 
     //the JFrame that contains the entire gui
     private static final JFrame CONTAINER = new JFrame();
@@ -65,7 +65,7 @@ public class MineSweeper  {
                 int height = Integer.parseInt(params.get(0));
                 int width = Integer.parseInt(params.get(1));
                 float density = Float.parseFloat(params.get(2));
-                game = new GameComponent(height, width, density);
+                game = new GameScreen(height, width, density);
                 CONTAINER.add(game, BorderLayout.CENTER);
                 //add sidebars to center game
                 addSideBars();

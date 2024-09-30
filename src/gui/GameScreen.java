@@ -13,7 +13,11 @@ import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 import game.*;
 
-public class GameComponent extends JComponent{
+/**Class that is a JComponent containing the minesweeper game instance.
+ * Used as a component to be added into a container gui.
+ *
+ */
+public class GameScreen extends JComponent{
 
 	//size, in pixels, of each square on the board
 	private final static int SQUARE_DIMENSION= 30;
@@ -45,13 +49,10 @@ public class GameComponent extends JComponent{
 	
 	/**Observer that receives notifications from operations done on
 	 * the minesweeper board. 
-	 * The observer is meant to receive notifications when the board
-	 * needs to be repainted in the GUI.
+	 * The observer notifies this component to repaint when required by the game.
 	 * 
 	 */
 	 public class GuiObserver {
-		private Rectangle bounds;
-		
 		/**Notifies the observer that a repaint is necessary.
 		 * The method's parameter is a Rectangle representing the region that needs to be
 		 * repainted.
@@ -67,7 +68,7 @@ public class GameComponent extends JComponent{
 	/**Instantiates an instance of the GUI
 	 * 
 	 */
-	public GameComponent(MineSweeperGame game) {
+	public GameScreen(MineSweeperGame game) {
 		game.setObserver(new GuiObserver());
 		this.game = game;
 		setPreferredSize(new Dimension(SQUARE_DIMENSION * game.getWidth(), SQUARE_DIMENSION * game.getHeight()));
@@ -82,7 +83,7 @@ public class GameComponent extends JComponent{
 	 * @param width the width of the game's board
 	 * @param density the density of the mines
 	 */
-	public GameComponent(int height, int width, double density) {
+	public GameScreen(int height, int width, double density) {
 		game = new MineSweeperGame(height,width, density);
 		game.setObserver(new GuiObserver());
 		Dimension size = new Dimension(SQUARE_DIMENSION * width, SQUARE_DIMENSION * height);
@@ -247,7 +248,7 @@ public class GameComponent extends JComponent{
 	 *
 	 */
 	public static void buildGame(MineSweeperGame mineSweeper) {
-		GameComponent game = new GameComponent(mineSweeper);
+		GameScreen game = new GameScreen(mineSweeper);
 		JFrame frame = new JFrame("Minesweeper");
 		frame.add(game);
 		frame.setSize(new Dimension(600, 400));
