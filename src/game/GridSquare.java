@@ -14,7 +14,7 @@ public interface GridSquare {
 	public String toString();
 	
 	
-	/**Returns whether or not the square is empty.
+	/**Returns whether the square is empty.
 	 * A GridSquare is Empty if it does not contain a mine.
 	 * By default, this method throws an exception.
 	 * @return whether the square is empty.
@@ -23,7 +23,7 @@ public interface GridSquare {
 		throw new UnsupportedOperationException("Square cannot support an Empty/Full state");
 	}
 	
-	/**Returns whether or not the square has a flag on it.
+	/**Returns whether the square has a flag on it.
 	 * By default, this method throws an exception.
 	 * @return whether the square has a flag.
 	 */

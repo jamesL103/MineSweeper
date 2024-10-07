@@ -3,7 +3,7 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Random;
 
-/**A representation of the game board. Stores a two dimensional field
+/**A representation of the game board. Stores a two-dimensional field
  * of empty squares and squares with mines.
  * Once the mines are generated, the MineBoard cannot have the position of the mines
  * modified.
@@ -149,8 +149,8 @@ public class MineBoard extends Board {
 	private Area generateExclusionBound(int row, int col) {
 		final int RECT_WIDTH = WIDTH / 5;
 		final int RECT_HEIGHT = HEIGHT / 5;
-		int startCol= (int)(col - RECT_WIDTH / 2);
-		int startRow = (int)(row - RECT_HEIGHT / 2);
+		int startCol= (col - RECT_WIDTH / 2);
+		int startRow = (row - RECT_HEIGHT / 2);
 		if (startCol < 0) {
 			startCol = 0;
 		} else if (startCol + RECT_WIDTH > board[0].length - 1) {
@@ -163,8 +163,7 @@ public class MineBoard extends Board {
 		}
 		CoordinateSet upperLeft = new CoordinateSet(startCol, startRow);
 		CoordinateSet bottomRight = new CoordinateSet(startCol + RECT_WIDTH, startRow + RECT_HEIGHT);
-		Area bounds = new Area(upperLeft, bottomRight);
-		return bounds;
+		return new Area(upperLeft, bottomRight);
 	}
 
 	/**Class to store two separate points, representing the upper left and
@@ -180,7 +179,7 @@ public class MineBoard extends Board {
 			bottomRight= low;
 		}
 		
-		/**Returns whether or not a specified point is contained in the 
+		/**Returns whether a specified point is contained in the
 		 * contained area of the PointNode, inclusive
 		 * with the border of the area.
 		 * 
@@ -189,38 +188,30 @@ public class MineBoard extends Board {
 		 */
 		private boolean contains(CoordinateSet p) {
 			if (p.x > topLeft.x && p.x < bottomRight.x) {
-				if (p.y > topLeft.y && p.y < bottomRight.y) {
-					return true;
-				}
+                return p.y > topLeft.y && p.y < bottomRight.y;
 			}
 			return false;
 		}
 		
-		/**Returns whether or not a specified x value falls between
+		/**Returns whether a specified x value falls between
 		 * the x values of the left and right bounds of the Area.
 		 * 
 		 * @param x the x value to check
-		 * @return whether or not the x value is in bounds
+		 * @return whether the x value is in bounds
 		 */
 		private boolean containsX(int x) {
-			if (x > topLeft.x && x < bottomRight.x) {
-				return true;
-			}
-			return false;
-		}
+            return x > topLeft.x && x < bottomRight.x;
+        }
 		
-		/**Returns whether or not a specified y value falls between
+		/**Returns whether a specified y value falls between
 		 * the y values of the top and bottom bounds of the Area.
 		 * 
 		 * @param y the y value to check
-		 * @return whether or not the y value is in bounds
+		 * @return whether the y value is in bounds
 		 */
 		private boolean containsY(int y) {
-			if ( y> topLeft.y && y < bottomRight.y) {
-				return true;
-			}
-			return false;
-		}
+            return y > topLeft.y && y < bottomRight.y;
+        }
 	}
 	
 	/**Numbers all empty tiles that border a mine in the board
@@ -273,8 +264,8 @@ public class MineBoard extends Board {
 
 	/**Increments any empty tiles to the right of a mine tile
 	 * 
-	 * @param x the x coord of the mine
-	 * @param y the y coord of the mine
+	 * @param x the x coordinate of the mine
+	 * @param y the y coordinate of the mine
 	 */
 	private void numberRightTiles(int x, int y) {
 		GridSquare right = board[y][x + 1];
@@ -306,8 +297,8 @@ public class MineBoard extends Board {
 	
 	/**Increments the tile below a mine tile
 	 * 
-	 * @param x
-	 * @param y
+	 * @param x x coordinate of the tile
+	 * @param y y coordinate of the tile
 	 */
 	private void numberBottomTile(int x, int y) {
 		GridSquare bot = board[y + 1][x];
@@ -317,11 +308,10 @@ public class MineBoard extends Board {
 	}
 
 	/**Returns the number of bordering mines of a specified tile.
-	 *
 	 * If the tile is a mine tile, returns -1.
 	 *
-	 * @param row
-	 * @param col
+	 * @param row row of specified tile
+	 * @param col column of specified tile
 	 * @return the number of bordering mines
 	 */
 	public int getBorderingMineCount(int row, int col) {

@@ -208,7 +208,6 @@ public class GameScreen extends JComponent implements Screen{
 	
 	/**Paints an empty exposed square and the number
 	 * of mines bordering it.
-	 *
 	 * Number will not be painted if there are no bordering mines.
 	 * 
 	 * @param g graphics object

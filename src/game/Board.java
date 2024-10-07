@@ -4,7 +4,7 @@ package game;
  * Meant to be extended to specialized boards holding specific GridSquare types.
  * Stores and tracks GridSquares on the board, provides methods to
  * view the dimensions of the board.
- * Once instantiated, the height and width of the board cannnot be
+ * Once instantiated, the height and width of the board cannot be
  * modified.
  */
 public class Board {

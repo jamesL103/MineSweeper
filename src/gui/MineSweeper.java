@@ -20,7 +20,6 @@ public class MineSweeper  {
 
     private static final GameGenerateObserver GEN_OBSERVER = new GameGenerateObserver();
 
-    private static int state;
     /** Creates the surrounding gui to store the minesweeper game in.
      *
      */
@@ -83,13 +82,13 @@ public class MineSweeper  {
     }
 
     /**observer to notify gui when game state has changed
-    game/gameover/win
+    game/game over/win
      **/
     public static class GameStateObserver {
 
         /**Notifies the GUI that the game state has changed.
          * Results in the GUI changing the screen shown
-         * State 0 is running game normally, 1 is game over, 2 is win
+         * State 0 is running game normally, 1 : game over, 2 : win
          * @param state the new state of the game
          */
         public void updateState(int state) {

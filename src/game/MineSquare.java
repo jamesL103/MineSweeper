@@ -9,7 +9,7 @@ public class MineSquare implements GridSquare {
 	public static final MineSquare INSTANCE = new MineSquare();
 	
 	
-	//private constructor, only one instance of Minesquare will exist
+	//private constructor
 	private MineSquare() {
 		
 	}

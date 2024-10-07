@@ -71,8 +71,8 @@ public class CoverBoard extends Board {
 
 	/**Returns whether there is a cover at the specified index of the board
 	 *
-	 * @param row
-	 * @param col
+	 * @param row row index to check
+	 * @param col column index to check
 	 * @return whether there is a cover
 	 */
 	public boolean hasCover(int row, int col) {

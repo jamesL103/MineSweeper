@@ -105,7 +105,7 @@ public class MineSweeperGame {
 	/**Returns a Queue containing all adjacent, empty, unvisited Squares
 	 * adjacent to the specified point.
 	 * 
-	 * @param p the 2D index to search for adjacencies.
+	 * @param p the 2D index to search for adjacent empty squares.
 	 * @param visited the points already visited
 	 * @return a Queue containing adjacent Squares
 	 */

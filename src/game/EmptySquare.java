@@ -8,7 +8,7 @@ public class EmptySquare implements GridSquare {
 	
 	
 	//all possible types of empty squares
-	//Squares with 0-8 neighboring mines
+	//with 0-8 neighboring mines
 	public final static EmptySquare[] INSTANCES;
 	
 	static
