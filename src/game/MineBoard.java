@@ -12,6 +12,8 @@ public class MineBoard extends Board {
 	
 	//the ratio of mines to empty tiles
 	private final double DENSITY;
+
+	private int mineCount;
 	
 	
 	//list of all squares containing mines
@@ -46,12 +48,14 @@ public class MineBoard extends Board {
 		super(rows,cols);
 		DENSITY = density;
 		mines = new LinkedList<>();
+		mineCount = 0;
 	}
 	
 	
 	/**Generates a new board with empty tiles and mines.
 	 * 
 	 */
+	@Deprecated
 	public void generateBoard() {
 		for (int row = 0; row < HEIGHT; row ++) {
 			for (int col = 0; col < WIDTH; col ++) {
@@ -96,6 +100,7 @@ public class MineBoard extends Board {
 				y = gen.nextInt(HEIGHT);
 			}
 			board[y][x] = MineSquare.INSTANCE;
+			mineCount++;
 			mines.add(new CoordinateSet(x,y));
 		}
 		numberEmptyTiles();
@@ -326,7 +331,15 @@ public class MineBoard extends Board {
 		return -1;
 	}
 
-	
+
+	/**Returns the number of mines on the board.
+	 *
+	 * @return the number of mines
+	 */
+	public int getMineCount() {
+		return mineCount;
+	}
+
 	@Override
 	public String toString() {
 		String toReturn = "";

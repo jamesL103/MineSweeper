@@ -6,7 +6,8 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Set;
 
-import gui.GameScreen;
+import gui.screens.GameScreen;
+import gui.MineSweeper;
 
 public class MineSweeperGame {
 	//board that stores the mines and empty tiles on the board
@@ -16,6 +17,9 @@ public class MineSweeperGame {
 	private final CoverBoard COVERS;
 	
 	private GameScreen.GuiObserver observer;
+
+	//observer to notify gui of game state changes
+	private final MineSweeper.GameStateObserver STATE_OBSERVER = new MineSweeper.GameStateObserver();
 	
 	//Stores whether the mines have been placed on the game board
 	private boolean generated = false;
@@ -69,12 +73,13 @@ public class MineSweeperGame {
 			return;
 		}
 
-		if (row < 0 || row >= BOARD.getHeight() || col < 0 || col >= BOARD.getWidth()) { //checks if boundaries are out of bounds
-			throw new IllegalArgumentException("Coordinates out of bounds");
-		}
-
 		removeNeighboringCovers(new Point(col, row));
  		observer.notifyRepaint();
+
+		 //checks if all non-mine covers have been removed, winning the game
+		if (COVERS.getCoverCount() - BOARD.getMineCount() <= 0) {
+			gameWin();
+		}
 	}
 
 	//helper method to remove any neighboring covers from the start that are empty
@@ -171,8 +176,13 @@ public class MineSweeperGame {
 	/**This method is called when the player hits a mine.
 	 * 
 	 */
-	public void gameOver() {
+	private void gameOver() {
 		System.out.println("fuck");
+		STATE_OBSERVER.updateState(1);
+	}
+
+	private void gameWin() {
+		STATE_OBSERVER.updateState(2);
 	}
 	
 	/**Returns the height, in squares, of the game board.

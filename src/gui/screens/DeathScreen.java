@@ -1,11 +1,13 @@
-package gui;
+package gui.screens;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class DeathScreen extends JComponent {
+public class DeathScreen extends JComponent implements Screen {
 
-    public DeathScreen() {
+    public static final DeathScreen INSTANCE = new DeathScreen();
+
+    private DeathScreen() {
         drawComponent();
     }
 

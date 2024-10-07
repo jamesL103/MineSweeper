@@ -1,11 +1,10 @@
-package gui;
+package gui.screens;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
-
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.imageio.ImageIO;
@@ -17,7 +16,7 @@ import game.*;
  * Used as a component to be added into a container gui.
  *
  */
-public class GameScreen extends JComponent{
+public class GameScreen extends JComponent implements Screen{
 
 	//size, in pixels, of each square on the board
 	private final static int SQUARE_DIMENSION= 30;
@@ -261,10 +260,7 @@ public class GameScreen extends JComponent{
 	}
 	
 	
-	/**Main method for testing
-	 * 
-	 * @param args
-	 */
+	//Main method for testing
 	public static void main(String[] args) {
 		Runnable createGui = () -> {
 			int maxRows = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter number of rows", 20));

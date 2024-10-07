@@ -4,6 +4,8 @@ package game;
  * Provides methods to manipulate the covers on the board.
  */
 public class CoverBoard extends Board {
+
+	private int coverCount;
 	
 	/** Instantiates a new board of covers with the specified
 	 * height and width.
@@ -18,6 +20,7 @@ public class CoverBoard extends Board {
 				board[row][col] = CoverSquare.INSTANCE;
 			}
 		}
+		coverCount = height * width;
 	}
 	
 	/**Removes a cover at a specified Square.
@@ -34,6 +37,7 @@ public class CoverBoard extends Board {
 		}
 		if (!board[row][col].isFlagged()) {
 			board[row][col] = null;
+			coverCount--;
 			return true;
 		}
 		return false;
@@ -74,5 +78,13 @@ public class CoverBoard extends Board {
 	public boolean hasCover(int row, int col) {
         return board[row][col] != null;
     }
+
+	/**Returns the number of covers left on the board.
+	 *
+	 * @return the number of covers
+	 */
+	public int getCoverCount() {
+		return coverCount;
+	}
 	
 }
