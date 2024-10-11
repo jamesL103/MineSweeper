@@ -20,6 +20,9 @@ public class MineSweeper  {
 
     private static final GameGenerateObserver GEN_OBSERVER = new GameGenerateObserver();
 
+    //colors
+    public static final Color BACKGROUND_COLOR = new Color(27, 27, 37);
+
     /** Creates the surrounding gui to store the minesweeper game in.
      *
      */

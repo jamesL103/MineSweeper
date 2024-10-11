@@ -11,6 +11,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 import game.*;
+import gui.MineSweeper;
 
 /**Class that is a JComponent containing the minesweeper game instance.
  * Used as a component to be added into a container gui.
@@ -27,7 +28,6 @@ public class GameScreen extends JComponent implements Screen{
 	private final static Image RED_FLAG;
 
 	//Default colors of the game
-	private static final Color BACKGROUND_COLOR = Color.DARK_GRAY;
 	private static final Color COVER_COLOR = Color.GREEN;
 	private static final Color EMPTY_COLOR = new Color(215, 184, 153);
 	private static final Color TEXT_COLOR = Color.BLACK;
@@ -68,6 +68,7 @@ public class GameScreen extends JComponent implements Screen{
 	 * 
 	 */
 	public GameScreen(MineSweeperGame game) {
+		super();
 		game.setObserver(new GuiObserver());
 		this.game = game;
 		setPreferredSize(new Dimension(SQUARE_DIMENSION * game.getWidth(), SQUARE_DIMENSION * game.getHeight()));
@@ -146,7 +147,7 @@ public class GameScreen extends JComponent implements Screen{
 		Rectangle gridBounds = new Rectangle(colStart, rowStart, colEnd - colStart, rowEnd - rowStart);
 		
 		/* Setting background */
-		g.setColor(BACKGROUND_COLOR);
+		g.setColor(MineSweeper.BACKGROUND_COLOR);
 		g.fillRect(0, 0, getWidth(), getHeight());
 
 		/* Drawing the grid */

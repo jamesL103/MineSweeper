@@ -5,6 +5,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 
+
 public class GameControlBar extends JComponent {
 
     //observer to alert container GUI
@@ -17,9 +18,16 @@ public class GameControlBar extends JComponent {
     //input for mine density
     private final TextField DENSITY_INPUT = new TextField("0.3");
 
+    //font
+    private final Font DEFAULT_FONT = new Font("Ebrima", Font.PLAIN, 12);
+
+    //colors
+    private final Color GENERATE_BUTTON_COLOR = new Color(93, 172, 211);
+
     //create new game settings bar
     //observer will alert container application that game needs to be regenerated
     public GameControlBar(MineSweeper.GameGenerateObserver observer) {
+        super();
         this.observer = observer;
         addTextInput();
 
@@ -33,16 +41,30 @@ public class GameControlBar extends JComponent {
 
     }
 
+    @Override
+    public void paintComponent(Graphics g) {
+        g.setColor(MineSweeper.BACKGROUND_COLOR);
+        g.fillRect(0, 0, getWidth(), getHeight());
+    }
+
     /**Creates the text fields and labels for input of game settings
      *
      */
     private void addTextInput() {
-        setLayout(new FlowLayout());
-        add(new Label("Height"));
+        FlowLayout layout = new FlowLayout();
+        setLayout(layout);
+        Label temp = new Label("Height");
+        temp.setFont(DEFAULT_FONT);
+        add(temp);
         add(HEIGHT_INPUT);
-        add(new Label("Width"));
+        temp = new Label("Width");
+        temp.setFont(DEFAULT_FONT);
+        add(temp);
         add(WIDTH_INPUT);
-        add(new Label("Density"));
+
+        temp = new Label("Density");
+        temp.setFont(DEFAULT_FONT);
+        add(temp);
         add(DENSITY_INPUT);
     }
 
@@ -59,6 +81,8 @@ public class GameControlBar extends JComponent {
             params.add(DENSITY_INPUT.getText());
             observer.notifyGenerate(params);
         });
+        generator.setBackground(GENERATE_BUTTON_COLOR);
+        generator.setForeground(new Color(53, 53, 53));
         return generator;
     }
 
