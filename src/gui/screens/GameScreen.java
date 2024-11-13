@@ -5,11 +5,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
+import javax.swing.*;
 import javax.imageio.ImageIO;
-import javax.swing.JComponent;
-import javax.swing.SwingUtilities;
+
 import game.*;
 import gui.MineSweeper;
 
@@ -17,7 +15,7 @@ import gui.MineSweeper;
  * Used as a component to be added into a container gui.
  *
  */
-public class GameScreen extends JComponent implements Screen{
+public class GameScreen extends JPanel implements Screen{
 
 	//size, in pixels, of each square on the board
 	private final static int SQUARE_DIMENSION= 30;
@@ -63,18 +61,6 @@ public class GameScreen extends JComponent implements Screen{
 		}
 		
 	}
-	
-	/**Instantiates an instance of the GUI
-	 * 
-	 */
-	public GameScreen(MineSweeperGame game) {
-		super();
-		game.setObserver(new GuiObserver());
-		this.game = game;
-		setPreferredSize(new Dimension(SQUARE_DIMENSION * game.getWidth(), SQUARE_DIMENSION * game.getHeight()));
-		addMouseListener(new MouseHandler());
-		repaint();
-	}
 
 	/**Instantiates a new Minesweeper gameGui component.
 	 * The game will have the specified height, width, and density.
@@ -89,6 +75,7 @@ public class GameScreen extends JComponent implements Screen{
 		Dimension size = new Dimension(SQUARE_DIMENSION * width, SQUARE_DIMENSION * height);
 		setPreferredSize(size);
 		setMaximumSize(size);
+		setBorder(BorderFactory.createLineBorder(Color.WHITE));
 		addMouseListener(new MouseHandler());
 	}
 	
@@ -157,7 +144,7 @@ public class GameScreen extends JComponent implements Screen{
 	/**Paints the grid of the game containing all the squares on the board.
 	 *
 	 * @param g the graphics to draw the game
-	 * @param gridRegion a region representing the region of the grid to paint
+	 * @param gridRegion a Rectangle representing the region of the grid to paint
 	 */
 	private void paintGrid(Graphics g, Rectangle gridRegion) {
 		int colStart = gridRegion.x;
@@ -241,34 +228,5 @@ public class GameScreen extends JComponent implements Screen{
 		g.drawString("x", (int)((col + 0.5)* SQUARE_DIMENSION),(int)( (row + 0.5) * SQUARE_DIMENSION));
 	}
 
-	
-	/**Builds the frame to contain and display the game component
-	 * For testing purposes
-	 *
-	 */
-	public static void buildGame(MineSweeperGame mineSweeper) {
-		GameScreen game = new GameScreen(mineSweeper);
-		JFrame frame = new JFrame("Minesweeper");
-		frame.add(game);
-		frame.setSize(new Dimension(600, 400));
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setVisible(true);
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		int upperLeftCornerX = (screenSize.width - frame.getWidth()) / 2;
-	    int upperLeftCornerY = (screenSize.height - frame.getHeight()) / 2;
-	    frame.setLocation(upperLeftCornerX, upperLeftCornerY);
-	}
-	
-	
-	//Main method for testing
-	public static void main(String[] args) {
-		Runnable createGui = () -> {
-			int maxRows = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter number of rows", 20));
-			int maxCols = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter number of columns", 20));
-			double density = Double.parseDouble(JOptionPane.showInputDialog(null, "Enter mine density", 0.1));
-			buildGame(new MineSweeperGame(maxRows, maxCols, density));
-		};
-		SwingUtilities.invokeLater(createGui);
-	}
 	
 }

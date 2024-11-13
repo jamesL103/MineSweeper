@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 
 
-public class GameControlBar extends JComponent {
+public class GameControlBar extends JPanel {
 
     //observer to alert container GUI
     private MineSweeper.GameGenerateObserver observer;
@@ -29,6 +29,8 @@ public class GameControlBar extends JComponent {
     public GameControlBar(MineSweeper.GameGenerateObserver observer) {
         super();
         this.observer = observer;
+        setBackground(MineSweeper.BACKGROUND_COLOR);
+        setForeground(MineSweeper.TEXT_COLOR);
         addTextInput();
 
         //button to generate game
@@ -56,15 +58,18 @@ public class GameControlBar extends JComponent {
         Label temp = new Label("Height");
         temp.setFont(DEFAULT_FONT);
         add(temp);
+        HEIGHT_INPUT.setForeground(Color.BLACK);
         add(HEIGHT_INPUT);
         temp = new Label("Width");
         temp.setFont(DEFAULT_FONT);
         add(temp);
+        WIDTH_INPUT.setForeground(Color.BLACK);
         add(WIDTH_INPUT);
 
         temp = new Label("Density");
         temp.setFont(DEFAULT_FONT);
         add(temp);
+        DENSITY_INPUT.setForeground(Color.BLACK);
         add(DENSITY_INPUT);
     }
 

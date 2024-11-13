@@ -1,5 +1,7 @@
 package gui.screens;
 
+import gui.MineSweeper;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -9,12 +11,16 @@ public class WinScreen extends JComponent implements Screen {
 
 
     private WinScreen() {
+        super();
         drawComponent();
     }
 
     public void drawComponent() {
         //set layout
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+
+        setBackground(MineSweeper.BACKGROUND_COLOR);
+        setForeground(MineSweeper.TEXT_COLOR);
 
         //add text
         Label deathMsg = new Label("you one");

@@ -58,7 +58,6 @@ public class MineSweeperGame {
 		if (!generated) { //only runs on game start, when first cover is removed
 			BOARD.generateBoard(row, col);
 			generated = true;
-			System.out.println(BOARD);
 		}
 		//if the selected square can't be removed/no square exists
 		//returns without doing anything
@@ -177,7 +176,6 @@ public class MineSweeperGame {
 	 * 
 	 */
 	private void gameOver() {
-		System.out.println("fuck");
 		STATE_OBSERVER.updateState(1);
 	}
 

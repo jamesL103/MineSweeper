@@ -17,11 +17,16 @@ public class MineSweeper  {
 
     //the JFrame that contains the entire gui
     private static final JFrame CONTAINER = new JFrame();
+    //layout and constraints
+    private static final GridBagLayout LAYOUT  = new GridBagLayout();
+    private static final GridBagConstraints GBC = new GridBagConstraints();
+    private static final GridBagConstraints SCREEN_GBC = new GridBagConstraints();
 
     private static final GameGenerateObserver GEN_OBSERVER = new GameGenerateObserver();
 
     //colors
     public static final Color BACKGROUND_COLOR = new Color(27, 27, 37);
+    public static final Color TEXT_COLOR = new Color(241, 241, 241);
 
     /** Creates the surrounding gui to store the minesweeper game in.
      *
@@ -32,26 +37,57 @@ public class MineSweeper  {
         CONTAINER.setSize(700, 500);
         CONTAINER.setName("Minesweeper");
         CONTAINER.setTitle("Minesweeper");
+        CONTAINER.getContentPane().setBackground(BACKGROUND_COLOR);
         CONTAINER.setVisible(true);
 
-        BorderLayout mainLayout = new BorderLayout();
-        CONTAINER.setLayout(mainLayout);
+        GBC.weightx = 1.0;
+        GBC.weighty = 1.0;
+
+        CONTAINER.setLayout(LAYOUT);
+        setScreenConstraints();
 
         //add top bar for game generation
-        CONTAINER.add(new GameControlBar(GEN_OBSERVER), BorderLayout.NORTH);
+        addControlBar();
+
+        currentScreen = DefaultScreen.INSTANCE;
+        CONTAINER.add(DefaultScreen.INSTANCE, SCREEN_GBC);
 
 
     }
 
+    //sets the GridBagConstraints for the displayed screens
+    private static void setScreenConstraints() {
+        SCREEN_GBC.weighty = 1.0;
+        SCREEN_GBC.weightx = 1.0;
+        SCREEN_GBC.gridx = 0;
+        SCREEN_GBC.gridy = 1;
+        SCREEN_GBC.gridwidth = GridBagConstraints.REMAINDER;
+        SCREEN_GBC.gridheight = 1;
+        SCREEN_GBC.fill = GridBagConstraints.BOTH;
+    }
+
+
+    //adds the game control bar to the top
+    private static void addControlBar() {
+        GBC.gridx = 0;
+        GBC.gridy = 0;
+        GBC.weighty = 0.1;
+        GBC.gridheight = 1;
+        GBC.gridwidth = GridBagConstraints.REMAINDER;
+        GBC.fill = GridBagConstraints.HORIZONTAL;
+        CONTAINER.add(new GameControlBar(GEN_OBSERVER), GBC);
+    }
+
     //add sideBars to the window to center the game in the frame
     private static void addSideBars() {
-        JComponent sideBar = new JComponent() {
-        };
+        JPanel sideBar = new JPanel();
         sideBar.setBackground(Color.WHITE);
         Dimension gameSize = gameScreen.getPreferredSize();
         sideBar.setSize((CONTAINER.getWidth()-gameSize.width)/2, CONTAINER.getHeight());
+
+
+
         CONTAINER.add(sideBar, BorderLayout.WEST);
-        CONTAINER.add(sideBar, BorderLayout.EAST);
     }
 
     //observer to notify the application when to generate a new minesweeper game
@@ -71,9 +107,10 @@ public class MineSweeper  {
                 int width = Integer.parseInt(params.get(1));
                 float density = Float.parseFloat(params.get(2));
                 gameScreen = new GameScreen(height, width, density);
-                CONTAINER.add(gameScreen, BorderLayout.CENTER);
+
+                CONTAINER.add(gameScreen, SCREEN_GBC);
                 //add sidebars to center game
-                addSideBars();
+//                addSideBars();
                 currentScreen = gameScreen;
                 CONTAINER.repaint();
                 CONTAINER.paintComponents(CONTAINER.getGraphics());
@@ -98,14 +135,16 @@ public class MineSweeper  {
             CONTAINER.remove((JComponent)currentScreen);
             switch (state) {
                 case 1:
-                    CONTAINER.add(DeathScreen.INSTANCE, BorderLayout.CENTER);
+                    CONTAINER.add(DeathScreen.INSTANCE, SCREEN_GBC);
                     currentScreen = DeathScreen.INSTANCE;
                     break;
                 case 2:
-                    CONTAINER.add(WinScreen.INSTANCE, BorderLayout.CENTER);
+                    CONTAINER.add(WinScreen.INSTANCE, SCREEN_GBC);
                     currentScreen = WinScreen.INSTANCE;
                     break;
                 default:
+                    CONTAINER.add(DefaultScreen.INSTANCE, SCREEN_GBC);
+                    currentScreen = DefaultScreen.INSTANCE;
                     break;
             }
             CONTAINER.repaint();
