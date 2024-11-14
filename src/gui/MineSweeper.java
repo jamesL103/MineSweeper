@@ -46,6 +46,8 @@ public class MineSweeper  {
         CONTAINER.setLayout(LAYOUT);
         setScreenConstraints();
 
+        gameScreen = new GameScreen(20, 20, 0.3);
+
         //add top bar for game generation
         addControlBar();
 
@@ -101,12 +103,12 @@ public class MineSweeper  {
         public void notifyGenerate(ArrayList<String> params) {
             try {
                 if (currentScreen != null) {
-                    CONTAINER.remove((JComponent)currentScreen);
+                    CONTAINER.remove((JPanel)currentScreen);
                 }
                 int height = Integer.parseInt(params.get(0));
                 int width = Integer.parseInt(params.get(1));
                 float density = Float.parseFloat(params.get(2));
-                gameScreen = new GameScreen(height, width, density);
+                gameScreen.newGame(height, width, density);
 
                 CONTAINER.add(gameScreen, SCREEN_GBC);
                 //add sidebars to center game

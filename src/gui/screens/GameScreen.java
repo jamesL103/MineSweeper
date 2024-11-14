@@ -22,6 +22,9 @@ public class GameScreen extends JPanel implements Screen{
 	//the MineSweeperGame being run by the GUI
 	private MineSweeperGame game;
 
+	//observer used to watch game for updates
+	private final GuiObserver OBSERVER;
+
 	//image for the red flag image
 	private final static Image RED_FLAG;
 
@@ -70,13 +73,18 @@ public class GameScreen extends JPanel implements Screen{
 	 * @param density the density of the mines
 	 */
 	public GameScreen(int height, int width, double density) {
-		game = new MineSweeperGame(height,width, density);
-		game.setObserver(new GuiObserver());
+		OBSERVER = new GuiObserver();
 		Dimension size = new Dimension(SQUARE_DIMENSION * width, SQUARE_DIMENSION * height);
 		setPreferredSize(size);
 		setMaximumSize(size);
 		setBorder(BorderFactory.createLineBorder(Color.WHITE));
 		addMouseListener(new MouseHandler());
+		newGame(height, width, density);
+	}
+
+	public void newGame(int height, int width, double density) {
+		game = new MineSweeperGame(height,width, density);
+		game.setObserver(OBSERVER);
 	}
 	
 	/**Mouse Listener to handle user interaction with the mouse
