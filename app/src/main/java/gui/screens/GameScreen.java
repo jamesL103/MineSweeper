@@ -181,12 +181,7 @@ public class GameScreen extends JPanel implements Screen{
 		}
 	}
 	
-	/**Paints a green cover square over the given square.
-	 * 
-	 * @param g
-	 * @param row
-	 * @param col
-	 */
+	//Paints a green cover square over the given square.
 	private void paintCover(Graphics g, int row, int col) {
 		g.setColor(COVER_COLOR);
 		g.fill3DRect(col * SQUARE_DIMENSION, row * SQUARE_DIMENSION,
@@ -196,13 +191,7 @@ public class GameScreen extends JPanel implements Screen{
 		}
 	}
 
-	/**Paint a flag image over the specified tile, only if there is a
-	 * cover at the index.
-	 *
-	 * @param g
-	 * @param row
-	 * @param col
-	 */
+	//Paint a flag image over the specified tile, only if there is a cover at the index.
 	private void paintFlag(Graphics g, int row, int col) {
 		g.drawImage(RED_FLAG, col * SQUARE_DIMENSION, row * SQUARE_DIMENSION, null);
 	}
@@ -212,8 +201,8 @@ public class GameScreen extends JPanel implements Screen{
 	 * Number will not be painted if there are no bordering mines.
 	 * 
 	 * @param g graphics object
-	 * @param row
-	 * @param col
+	 * @param row y of square
+	 * @param col x of square
 	 * @param mineCount the number of mines bordering the specified square
 	 */
 	private void paintEmptySquare(Graphics g, int row, int col, int mineCount) {
@@ -227,12 +216,7 @@ public class GameScreen extends JPanel implements Screen{
 		}
 	}
 	
-	/**Paints a mine in the square
-	 * 
-	 * @param g
-	 * @param row
-	 * @param col
-	 */
+	//Paints a mine in the square
 	private void paintMineSquare(Graphics g, int row, int col) {
 		g.setColor(EMPTY_COLOR);
 		g.fill3DRect(col * SQUARE_DIMENSION, row * SQUARE_DIMENSION,
