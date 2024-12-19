@@ -156,6 +156,11 @@ public class MineSweeper  {
     }
 
 
+    //greeting
+    public String getGreeting() {
+        return "get ready to bomb some people!";
+    }
+
     public static void main(String[] args) {
         Runnable createGui = MineSweeper::buildGui;
         SwingUtilities.invokeLater(createGui);
