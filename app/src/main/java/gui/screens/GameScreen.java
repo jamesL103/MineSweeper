@@ -17,6 +17,9 @@ import gui.MineSweeper;
  */
 public class GameScreen extends JPanel implements Screen{
 
+	//path to image for red flag
+	private static final String PATH_RED_FLAG = "\\src\\main\\java\\gui\\red_triangle.png";
+
 	//size, in pixels, of each square on the board
 	private final static int SQUARE_DIMENSION= 30;
 	//the MineSweeperGame being run by the GUI
@@ -35,11 +38,13 @@ public class GameScreen extends JPanel implements Screen{
 	
 	//Initializes the images used in the game
 	static {
+		String curr_dir = System.getProperty("user.dir");
+		System.out.println(curr_dir);
 		Image temp = null;
 		try {
-			 temp = ImageIO.read(new File("src/gui/red_triangle.png"));
+			 temp = ImageIO.read(new File(curr_dir + PATH_RED_FLAG));
 		} catch (IOException e) {
-			System.out.println("Error: image red_triangle cannot be found");
+			System.out.println("Error: image " + curr_dir + PATH_RED_FLAG + " cannot be found");
 			System.exit(1);
 		}
 		//scale the image to the right height
