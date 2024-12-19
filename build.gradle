@@ -1,0 +1,19 @@
+plugins {
+    id 'java'
+}
+
+group 'James'
+version '1.0 SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src']
+        }
+    }
+}
+
