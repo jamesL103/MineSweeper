@@ -41,27 +41,22 @@ public class MineBoard extends Board {
 	 * @param selectedRow the row index of the center of the exclusion zone
 	 * @param selectedCol the column index of the center of the exclusion zone
 	 */
-	//todo: this is fucking bad
+	//todo: this is better but it still isn't fair
 	public void generateBoard(int selectedRow, int selectedCol) {
 		//generates an Area that sets the exclusion area
 		Rectangle exclusionBound = generateExclusionBound(selectedRow, selectedCol);
+		Random gen = new Random();
 		for (int row = 0; row < HEIGHT; row ++) {
 			for (int col = 0; col < WIDTH; col ++) {
-				board[row][col] = EmptySquare.INSTANCES[0];
+				//when the tile is outside the exclusion zone, has a chance to place a mine
+				if (!exclusionBound.contains(col, row) && gen.nextDouble() < DENSITY) {
+					board[row][col] = MineSquare.INSTANCE;
+					mineCount++;
+					MINES.add(new Point(col, row));
+				} else {
+					board[row][col] = EmptySquare.INSTANCES[0];
+				}
 			}
-		}
-		Random gen = new Random();
-		//populate board with mines
-		for (int i = 1; i <= DENSITY * (HEIGHT*WIDTH); i ++) {
-			int x = gen.nextInt(WIDTH);
-			int y = gen.nextInt(HEIGHT);
-			while (!board[y][x].isEmpty() || exclusionBound.contains(new Point(x, y))) {
-				x = gen.nextInt(WIDTH);
-				y = gen.nextInt(HEIGHT);
-			}
-			board[y][x] = MineSquare.INSTANCE;
-			mineCount++;
-			MINES.add(new Point(x, y));
 		}
 		numberEmptyTiles();
 	}
