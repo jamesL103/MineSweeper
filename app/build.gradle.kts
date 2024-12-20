@@ -47,3 +47,17 @@ tasks.register<Copy>("copyAssets") {
     into("build/libs")
     include("assets/*")
 }
+
+tasks.register<Zip>("zip") {
+    group = "distribution"
+    description = "Make the zip file containing the jar and assets for the game"
+}
+
+tasks.named<Zip>("zip") {
+    archiveFileName = "Scuffed_Minesweeper.zip"
+    from("./build/libs")
+    into("./")
+    dependsOn(tasks.named("jar"))
+
+}
+
