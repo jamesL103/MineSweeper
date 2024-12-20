@@ -39,4 +39,11 @@ tasks.jar {
     manifest {
         attributes["Main-Class"] = application.mainClass
     }
+    dependsOn(tasks.named("copyAssets"))
+}
+
+tasks.register<Copy>("copyAssets") {
+    from("./")
+    into("build/libs")
+    include("assets/*")
 }

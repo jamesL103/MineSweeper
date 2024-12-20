@@ -18,7 +18,7 @@ import gui.MineSweeper;
 public class GameScreen extends JPanel implements Screen{
 
 	//path to image for red flag
-	private static final String PATH_RED_FLAG = "\\src\\main\\java\\gui\\red_triangle.png";
+	private static final String PATH_RED_FLAG = "\\assets\\red_triangle.png";
 
 	//size, in pixels, of each square on the board
 	private final static int SQUARE_DIMENSION= 30;
