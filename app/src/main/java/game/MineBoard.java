@@ -1,4 +1,5 @@
 package game;
+import java.awt.*;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Random;
@@ -17,18 +18,8 @@ public class MineBoard extends Board {
 	
 	
 	//list of all squares containing mines
-	private Collection<CoordinateSet> mines;
+	private final Collection<Point> MINES;
 
-	//Class that stores an x and y coordinate
-	private class CoordinateSet {
-		int x, y;
-		
-		private CoordinateSet(int x, int y) {
-			this.x = x;
-			this.y = y;
-		}
-		
-	}
 	
 	/**Creates a new MineBoard with specified dimension and density.
 	 * 
@@ -39,7 +30,7 @@ public class MineBoard extends Board {
 	public MineBoard(int rows, int cols, double density) {
 		super(rows,cols);
 		DENSITY = density;
-		mines = new LinkedList<>();
+		MINES = new LinkedList<>();
 		mineCount = 0;
 	}
 
@@ -53,7 +44,7 @@ public class MineBoard extends Board {
 	//todo: this is fucking bad
 	public void generateBoard(int selectedRow, int selectedCol) {
 		//generates an Area that sets the exclusion area
-		Area exclusionBound = generateExclusionBound(selectedRow, selectedCol);
+		Rectangle exclusionBound = generateExclusionBound(selectedRow, selectedCol);
 		for (int row = 0; row < HEIGHT; row ++) {
 			for (int col = 0; col < WIDTH; col ++) {
 				board[row][col] = EmptySquare.INSTANCES[0];
@@ -64,48 +55,15 @@ public class MineBoard extends Board {
 		for (int i = 1; i <= DENSITY * (HEIGHT*WIDTH); i ++) {
 			int x = gen.nextInt(WIDTH);
 			int y = gen.nextInt(HEIGHT);
-			while (!board[y][x].isEmpty() || exclusionBound.contains(new CoordinateSet(x, y))) {
+			while (!board[y][x].isEmpty() || exclusionBound.contains(new Point(x, y))) {
 				x = gen.nextInt(WIDTH);
 				y = gen.nextInt(HEIGHT);
 			}
 			board[y][x] = MineSquare.INSTANCE;
 			mineCount++;
-			mines.add(new CoordinateSet(x,y));
+			MINES.add(new Point(x, y));
 		}
 		numberEmptyTiles();
-	}
-	
-	//TODO optimize mine generation algorithm
-	/**Generates and returns a valid 2D coordinate for a mine to be placed at.
-	 * The specified exclusion area covers the positions on the board where
-	 * mines will not spawn.
-	 *
-	 * @param exclusion the area to avoid spawning mines
-	 * @return the coordinates for a mine to be spawned at.
-	 */
-	private CoordinateSet generateMineCoords(Area exclusion) {
-		Random gen = new Random();
-		int x;
-		int y;
-		do {
-			x = gen.nextInt(WIDTH);
-			y = gen.nextInt(HEIGHT);
-			if (exclusion.containsX(x)) {
-				if (exclusion.topLeft.x == 0) {
-					x = gen.nextInt(WIDTH - exclusion.bottomRight.x - 1) + exclusion.bottomRight.x + 1;
-				} else if (exclusion.bottomRight.x == WIDTH - 1) {
-					x = gen.nextInt(exclusion.topLeft.x);
-				} else {
-					if (Math.abs(x - exclusion.bottomRight.x) < Math.abs(x - exclusion.topLeft.x)) {
-						x = gen.nextInt(WIDTH - exclusion.bottomRight.x - 1) + exclusion.bottomRight.x + 1;
-					}
-				}
-			}
-			if (exclusion.containsY(y)) {
-				
-			}
-		} while (!board[x][y].isEmpty());
-		return new CoordinateSet(x, y);
 	}
 	
 	
@@ -115,7 +73,7 @@ public class MineBoard extends Board {
 	 * @param col the column index of the center of the rectangle
 	 * @return a rectangle surrounding the specified point.
 	 */
-	private Area generateExclusionBound(int row, int col) {
+	private Rectangle generateExclusionBound(int row, int col) {
 		final int RECT_WIDTH = WIDTH / 5;
 		final int RECT_HEIGHT = HEIGHT / 5;
 		int startCol= (col - RECT_WIDTH / 2);
@@ -130,66 +88,18 @@ public class MineBoard extends Board {
 		} else if (startRow + RECT_HEIGHT > board.length - 1) {
 			startRow -= (startRow + RECT_HEIGHT) - board.length - 1;
 		}
-		CoordinateSet upperLeft = new CoordinateSet(startCol, startRow);
-		CoordinateSet bottomRight = new CoordinateSet(startCol + RECT_WIDTH, startRow + RECT_HEIGHT);
-		return new Area(upperLeft, bottomRight);
+		Point upperLeft = new Point(startCol, startRow);
+		return new Rectangle(upperLeft, new Dimension(RECT_WIDTH, RECT_HEIGHT));
 	}
 
-	/**Class to store two separate points, representing the upper left and
-	 * lower right corners of a rectangular area.
-	 *
-	 *
-	 */
-	private class Area {
-		private CoordinateSet topLeft, bottomRight;
-		
-		private Area(CoordinateSet up, CoordinateSet low) {
-			topLeft = up;
-			bottomRight= low;
-		}
-		
-		/**Returns whether a specified point is contained in the
-		 * contained area of the PointNode, inclusive
-		 * with the border of the area.
-		 * 
-		 * @param p the point to check if it is contained.
-		 * @return whether the point is within the region
-		 */
-		private boolean contains(CoordinateSet p) {
-			if (p.x > topLeft.x && p.x < bottomRight.x) {
-                return p.y > topLeft.y && p.y < bottomRight.y;
-			}
-			return false;
-		}
-		
-		/**Returns whether a specified x value falls between
-		 * the x values of the left and right bounds of the Area.
-		 * 
-		 * @param x the x value to check
-		 * @return whether the x value is in bounds
-		 */
-		private boolean containsX(int x) {
-            return x > topLeft.x && x < bottomRight.x;
-        }
-		
-		/**Returns whether a specified y value falls between
-		 * the y values of the top and bottom bounds of the Area.
-		 * 
-		 * @param y the y value to check
-		 * @return whether the y value is in bounds
-		 */
-		private boolean containsY(int y) {
-            return y > topLeft.y && y < bottomRight.y;
-        }
-	}
 	
 	/**Numbers all empty tiles that border a mine in the board
 	 * 
 	 */
 	private void numberEmptyTiles() {
-		for (CoordinateSet coords: mines) {
-			int x = coords.x;
-			int y = coords.y;
+		for (Point mine_point: MINES) {
+			int x = mine_point.x;
+			int y = mine_point.y;
 			if (x > 0) {
 				numberLeftTiles(x, y);
 			}
