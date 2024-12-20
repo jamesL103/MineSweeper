@@ -103,7 +103,7 @@ public class MineSweeper  {
         public void notifyGenerate(ArrayList<String> params) {
             try {
                 if (currentScreen != null) {
-                    CONTAINER.remove((JPanel)currentScreen);
+                    CONTAINER.remove((JComponent)currentScreen);
                 }
                 int height = Integer.parseInt(params.get(0));
                 int width = Integer.parseInt(params.get(1));

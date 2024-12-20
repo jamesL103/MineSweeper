@@ -30,14 +30,6 @@ public class MineBoard extends Board {
 		
 	}
 	
-	/**Creates a new MineBoard with default settings.
-	 * The board is a 20x20 grid with a mine/empty density of 0.1
-	 * 
-	 */
-	public MineBoard() {
-		this(20, 20, .1);
-	}
-	
 	/**Creates a new MineBoard with specified dimension and density.
 	 * 
 	 * @param rows the height of the board
@@ -50,31 +42,7 @@ public class MineBoard extends Board {
 		mines = new LinkedList<>();
 		mineCount = 0;
 	}
-	
-	
-	/**Generates a new board with empty tiles and mines.
-	 * 
-	 */
-	@Deprecated
-	public void generateBoard() {
-		for (int row = 0; row < HEIGHT; row ++) {
-			for (int col = 0; col < WIDTH; col ++) {
-				board[row][col] = EmptySquare.INSTANCES[0];
-			}
-		}
-		Random gen = new Random();
-		for (int i = 1; i <= DENSITY * (HEIGHT*WIDTH); i ++) {
-			int x = gen.nextInt(WIDTH);
-			int y = gen.nextInt(HEIGHT);
-			while ((board[y][x] instanceof MineSquare)) {
-				x = gen.nextInt(WIDTH);
-				y = gen.nextInt(HEIGHT);
-			}
-			board[y][x] = MineSquare.INSTANCE;
-			mines.add(new CoordinateSet(x,y));
-		}
-		numberEmptyTiles();
-	}
+
 	
 	/** Generates a new board with an exclusion area around the
 	 * starting point where no mines will spawn.
@@ -82,6 +50,7 @@ public class MineBoard extends Board {
 	 * @param selectedRow the row index of the center of the exclusion zone
 	 * @param selectedCol the column index of the center of the exclusion zone
 	 */
+	//todo: this is fucking bad
 	public void generateBoard(int selectedRow, int selectedCol) {
 		//generates an Area that sets the exclusion area
 		Area exclusionBound = generateExclusionBound(selectedRow, selectedCol);

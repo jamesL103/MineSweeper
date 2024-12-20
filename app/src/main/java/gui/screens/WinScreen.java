@@ -5,7 +5,7 @@ import gui.MineSweeper;
 import javax.swing.*;
 import java.awt.*;
 
-public class WinScreen extends JComponent implements Screen {
+public class WinScreen extends JPanel implements Screen {
 
     public static final WinScreen INSTANCE = new WinScreen();
 
